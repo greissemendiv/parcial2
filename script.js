@@ -109,3 +109,23 @@ function drawPolygon(vertices, color="#000") {
         );
     }
 }
+
+function main() {
+    let cx = 300;
+    let cy = 300;
+
+    let R = Math.floor(Math.random() * 100) + 150;
+    let N = Math.floor(Math.random() * 7) + 4;   // 4 a 10
+    let K = Math.floor(Math.random() * 5) + 3;   // lados
+
+    midpointCircle(cx, cy, R, "#000000");
+
+    let centers = getOrbitalPositions(cx, cy, R, N);
+
+    centers.forEach(p => {
+        let vertices = getPolygonVertices(p.x, p.y, 20, K);
+        drawPolygon(vertices);
+    });
+}
+
+main();
