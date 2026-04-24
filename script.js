@@ -79,3 +79,33 @@ function getOrbitalPositions(cx, cy, r, n) {
 
     return points;
 }
+
+function getPolygonVertices(cx, cy, radius, sides) {
+    let vertices = [];
+
+    for (let i = 0; i < sides; i++) {
+        let angle = (2 * Math.PI * i) / sides;
+
+        let x = cx + radius * Math.cos(angle);
+        let y = cy + radius * Math.sin(angle);
+
+        vertices.push({ x, y });
+    }
+
+    return vertices;
+}
+
+function drawPolygon(vertices, color="#000") {
+    for (let i = 0; i < vertices.length; i++) {
+        let v1 = vertices[i];
+        let v2 = vertices[(i + 1) % vertices.length];
+
+        bresenhamLine(
+            Math.round(v1.x),
+            Math.round(v1.y),
+            Math.round(v2.x),
+            Math.round(v2.y),
+            color
+        );
+    }
+}
