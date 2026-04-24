@@ -39,7 +39,7 @@ function midpointCircle(cx, cy, r, color="#0FF") {
     let y = r;
     let p = 1 - r;
 
-    while (x < y) {
+    while (x <= y) {
         drawCirclePoints(cx, cy, x, y, color);
 
         x++;
@@ -63,4 +63,19 @@ function drawCirclePoints(cx, cy, x, y, color) {
     plotPixel(ctx, cx - y, cy + x, color);
     plotPixel(ctx, cx + y, cy - x, color);
     plotPixel(ctx, cx - y, cy - x, color);
+}
+
+function getOrbitalPositions(cx, cy, r, n) {
+    let points = [];
+
+    for (let i = 0; i < n; i++) {
+        let angle = (2 * Math.PI * i) / n;
+
+        let x = cx + r * Math.cos(angle);
+        let y = cy + r * Math.sin(angle);
+
+        points.push({ x, y });
+    }
+
+    return points;
 }
