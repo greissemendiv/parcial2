@@ -33,3 +33,34 @@ function bresenhamLine(x0, y0, x1, y1, color="#0FF") {
         }
     }
 }
+
+function midpointCircle(cx, cy, r, color="#0FF") {
+    let x = 0;
+    let y = r;
+    let p = 1 - r;
+
+    while (x < y) {
+        drawCirclePoints(cx, cy, x, y, color);
+
+        x++;
+
+        if (p < 0) {
+            p += 2 * x + 1;
+        } else {
+            y--;
+            p += 2 * (x - y) + 1;
+        }
+    }
+}
+
+function drawCirclePoints(cx, cy, x, y, color) {
+    plotPixel(ctx, cx + x, cy + y, color);
+    plotPixel(ctx, cx - x, cy + y, color);
+    plotPixel(ctx, cx + x, cy - y, color);
+    plotPixel(ctx, cx - x, cy - y, color);
+
+    plotPixel(ctx, cx + y, cy + x, color);
+    plotPixel(ctx, cx - y, cy + x, color);
+    plotPixel(ctx, cx + y, cy - x, color);
+    plotPixel(ctx, cx - y, cy - x, color);
+}
