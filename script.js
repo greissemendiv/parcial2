@@ -1,11 +1,21 @@
+/**
+ * Universidad - Facultad de Ingeniería
+ * Asignatura: Introducción a la Computación Gráfica
+ * Estudiante: Greisse Yuliana Mendivelso Peña
+ */
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+// Única función autorizada para dibujar
 function plotPixel(ctx, x, y, color = "#0FF") {
     ctx.fillStyle = color;
     ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
 }
 
+/**
+ * Algoritmo de Bresenham para líneas
+ */
 function bresenhamLine(x0, y0, x1, y1, color="#0FF") {
     let dx = Math.abs(x1 - x0);
     let dy = Math.abs(y1 - y0);
@@ -34,6 +44,9 @@ function bresenhamLine(x0, y0, x1, y1, color="#0FF") {
     }
 }
 
+/**
+ * Algoritmo de Punto Medio para circunferencias
+ */
 function midpointCircle(cx, cy, r, color="#0FF") {
     let x = 0;
     let y = r;
@@ -65,6 +78,16 @@ function drawCirclePoints(cx, cy, x, y, color) {
     plotPixel(ctx, cx - y, cy - x, color);
 }
 
+/**
+ * Posiciones orbitales
+ *
+ * Retorna los centros donde se ubicarán los polígonos
+ * @param {number} cx - Centro X
+ * @param {number} cy - Centro Y
+ * @param {number} r - Radio de la órbita
+ * @param {number} n - Cantidad de polígonos
+ * @returns {Array} [{x, y}, ...]
+ */
 function getOrbitalPositions(cx, cy, r, n) {
     let points = [];
 
@@ -80,6 +103,16 @@ function getOrbitalPositions(cx, cy, r, n) {
     return points;
 }
 
+/**
+ * Generación de polígonos
+ *
+ * Retorna los vértices de un polígono regular
+ * @param {number} cx
+ * @param {number} cy
+ * @param {number} radius
+ * @param {number} sides
+ * @returns {Array} [{x, y}, ...]
+ */
 function getPolygonVertices(cx, cy, radius, sides) {
     let vertices = [];
 
@@ -95,7 +128,9 @@ function getPolygonVertices(cx, cy, radius, sides) {
     return vertices;
 }
 
-function drawPolygon(vertices, color="#000") {
+//Función dibujar polígono sin borde de línea (v. anterior)
+/*/
+function drawPolygon(vertices, color="#F00") {
     for (let i = 0; i < vertices.length; i++) {
         let v1 = vertices[i];
         let v2 = vertices[(i + 1) % vertices.length];
@@ -109,7 +144,40 @@ function drawPolygon(vertices, color="#000") {
         );
     }
 }
+/*/
 
+/**
+ * Dibuja un polígono usando Bresenham
+ */
+function drawPolygon(vertices, color = "#F00", borderColor = "#F00", lineWidth = 2) {
+    for (let i = 0; i < vertices.length; i++) {
+        let v1 = vertices[i];
+        let v2 = vertices[(i + 1) % vertices.length];
+
+        drawThickLine(
+            Math.round(v1.x),
+            Math.round(v1.y),
+            Math.round(v2.x),
+            Math.round(v2.y),
+            borderColor,
+            lineWidth
+        );
+    }
+}
+/**
+ * Función linea gruesa
+ */
+function drawThickLine(x1, y1, x2, y2, color, thickness) {
+    for (let i = -Math.floor(thickness / 2); i <= Math.floor(thickness / 2); i++) {
+        // Desplazamiento en perpendicular (aproximado)
+        bresenhamLine(x1 + i, y1, x2 + i, y2, color);
+        bresenhamLine(x1, y1 + i, x2, y2 + i, color);
+    }
+}
+
+/**
+ * Función principal
+ */
 function main() {
     let cx = 300;
     let cy = 300;
